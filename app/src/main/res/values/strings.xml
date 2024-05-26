@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">FilmExplorer</string>
+    <string name="data_film">Data Film</string>
+    <string name="masukkan_judul_film">Masukkan judul film</string>
+    <string name="kirim">Kirim</string>
+    <string name="poster_film">Poster film</string>
+    <string name="judul">Judul</string>
+    <string name="moana">Moana</string>
+    <string name="_2016">2016</string>
+    <string name="tahun">Tahun</string>
+    <string name="genre">Genre</string>
+    <string name="animation_adventure_comedy">Animation, Adventure, Comedy</string>
+    <string name="director">Director</string>
+    <string name="ron_clements_john_musker_don_hall">Ron Clements, John Musker, Don Hall</string>
+    <string name="writer">Writer</string>
+    <string name="jared_bush_ron_clements_john_musker">Jared Bush, Ron Clements, John Musker</string>
+    <string name="actors">Actors</string>
+    <string name="auli_i_cravalho_dwayne_johnson_rachel_house">Auli\'i Cravalho, Dwayne Johnson, Rachel House</string>
+    <string name="reset">Reset</string>
+    <string name="plot">Plot</string>
+    <string name="in_ancient_polynesia_when_a_terrible_curse_incurred_by_the_demigod_maui_reaches_moana_s_island_she_answers_the_ocean_s_call_to_seek_out_maui_to_set_things_right">In ancient Polynesia, when a terrible curse incurred by the demigod Maui reaches Moana\'s island, she answers the Ocean\'s call to seek out Maui to set things right.</string>
+</resources>
