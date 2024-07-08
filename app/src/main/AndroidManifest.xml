@@ -15,6 +15,9 @@
         android:theme="@style/Theme.FilmExplorer"
         tools:targetApi="31">
         <activity
+            android:name=".OnBoardingActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="false" />
         <activity

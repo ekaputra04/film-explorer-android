@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/dark"
+    android:padding="0dp"
+    tools:context=".OnBoardingActivity">
+
+    <ImageView
+        android:id="@+id/img_onboarding"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="92dp"
+        android:padding="0dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/film_grid"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_onboarding"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
+        android:paddingVertical="64dp"
+        android:text="@string/explore_your_favorite_movies"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@id/img_onboarding" />
+
+    <Button
+        android:id="@+id/btn_onboarding"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32dp"
+        android:background="@drawable/background_button"
+        android:fontFamily="@font/poppins_semi_bold"
+        android:padding="8dp"
+        android:text="@string/next"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@id/tv_onboarding" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
