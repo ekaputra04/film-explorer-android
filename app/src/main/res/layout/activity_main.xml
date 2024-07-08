@@ -1,255 +1,88 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/white"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:background="@color/dark"
+    android:paddingHorizontal="32dp"
+    android:paddingTop="64dp"
+    tools:context=".MainActivity">
 
-    <RelativeLayout
+    <ImageView
+        android:id="@+id/img_main_profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/profile"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/tv_main_hey_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_semi_bold"
+        android:text="@string/hey_eka"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/poppins_regular"
+        android:text="@string/what_movie_do_you_want_to_watch_today"
+        android:textColor="@color/gray"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_main_hey_name"
+        tools:ignore="SmallSp" />
+
+    <EditText
+        android:id="@+id/edt_main_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".MainActivity">
+        android:layout_marginTop="32dp"
+        android:background="@drawable/background_input_dark_gray"
+        android:hint="@string/search_any_movies_name_here"
+        android:padding="16dp"
+        android:textColor="@color/gray"
+        android:textColorHint="@color/gray"
+        android:textSize="12sp"
+        app:layout_constraintTop_toBottomOf="@id/img_main_profile" />
 
-        <RelativeLayout
-            android:id="@+id/rel_1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="20dp"
-            tools:ignore="UselessParent">
+    <ImageView
+        android:id="@+id/img_main_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/search"
+        app:layout_constraintBottom_toBottomOf="@id/edt_main_search"
+        app:layout_constraintEnd_toEndOf="@id/edt_main_search"
+        app:layout_constraintTop_toTopOf="@id/edt_main_search" />
 
-            <TextView
-                android:id="@+id/tv_judul"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginVertical="16dp"
-                android:text="@string/data_film"
-                android:textColor="@color/purple_700"
-                android:textSize="30sp"
-                android:textStyle="bold" />
+    <TextView
+        android:id="@+id/tv_main_recent_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/poppins_semi_bold"
+        android:text="@string/recent_search"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edt_main_search" />
 
-            <EditText
-                android:id="@+id/edt_input"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_judul"
-                android:layout_marginTop="16dp"
-                android:hint="@string/masukkan_judul_film" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_main_recent_search"
+        tools:listitem="@layout/item_movies" />
 
-            <LinearLayout
-                android:id="@+id/layout_btn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/edt_input"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/btn_kirim"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="16dp"
-                    android:layout_marginEnd="5dp"
-                    android:layout_weight="5"
-                    android:background="@color/purple_700"
-                    android:text="@string/kirim"
-                    android:textColor="@color/white" />
-
-                <Button
-                    android:id="@+id/btn_reset"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="16dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_weight="1"
-                    android:background="@color/red"
-                    android:text="@string/reset"
-                    android:textColor="@color/white" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/layout_info_poster"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/layout_btn"
-                android:layout_marginBottom="50dp"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:id="@+id/img_poster"
-                    android:layout_width="150dp"
-                    android:layout_height="200dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginVertical="16dp"
-                    android:contentDescription="@string/poster_film"
-                    android:src="@drawable/img" />
-
-                <LinearLayout
-                    android:id="@+id/linear_layout_1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="5dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="3"
-                        android:text="@string/judul"
-                        android:textColor="@color/purple_700" />
-
-                    <TextView
-                        android:id="@+id/tv_title"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/moana"
-                        android:textColor="@color/purple_700" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/linear_layout_2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="5dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="3"
-                        android:text="@string/tahun"
-                        android:textColor="@color/purple_700" />
-
-                    <TextView
-                        android:id="@+id/tv_year"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/_2016"
-                        android:textColor="@color/purple_700" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/linear_layout_3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="5dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="3"
-                        android:text="@string/genre"
-                        android:textColor="@color/purple_700" />
-
-                    <TextView
-                        android:id="@+id/tv_genre"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/animation_adventure_comedy"
-                        android:textColor="@color/purple_700" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/linear_layout_4"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="5dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="3"
-                        android:text="@string/director"
-                        android:textColor="@color/purple_700" />
-
-                    <TextView
-                        android:id="@+id/tv_director"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/ron_clements_john_musker_don_hall"
-                        android:textColor="@color/purple_700" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/linear_layout_5"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="5dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="3"
-                        android:text="@string/writer"
-                        android:textColor="@color/purple_700" />
-
-                    <TextView
-                        android:id="@+id/tv_writer"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/jared_bush_ron_clements_john_musker"
-                        android:textColor="@color/purple_700" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/linear_layout_6"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="5dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="3"
-                        android:text="@string/actors"
-                        android:textColor="@color/purple_700" />
-
-                    <TextView
-                        android:id="@+id/tv_actors"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/auli_i_cravalho_dwayne_johnson_rachel_house"
-                        android:textColor="@color/purple_700" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/linear_layout_7"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="5dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="3"
-                        android:text="@string/plot"
-                        android:textColor="@color/purple_700" />
-
-                    <TextView
-                        android:id="@+id/tv_plot"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/in_ancient_polynesia_when_a_terrible_curse_incurred_by_the_demigod_maui_reaches_moana_s_island_she_answers_the_ocean_s_call_to_seek_out_maui_to_set_things_right"
-                        android:textColor="@color/purple_700" />
-                </LinearLayout>
-
-
-            </LinearLayout>
-        </RelativeLayout>
-
-    </RelativeLayout>
-</ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

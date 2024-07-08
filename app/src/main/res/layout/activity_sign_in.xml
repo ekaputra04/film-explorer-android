@@ -35,9 +35,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:background="@drawable/background_stroke_gray"
+        android:hint="@string/e_mail"
         android:padding="16dp"
-        android:text="@string/e_mail"
         android:textColor="@color/gray"
+        android:textColorHint="@color/gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_sign_in_activity" />
@@ -48,9 +49,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:background="@drawable/background_stroke_gray"
+        android:hint="@string/password"
         android:padding="16dp"
-        android:text="@string/password"
         android:textColor="@color/gray"
+        android:textColorHint="@color/gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/edt_sign_in_email" />

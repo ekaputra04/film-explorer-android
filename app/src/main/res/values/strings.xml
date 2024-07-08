@@ -30,4 +30,9 @@
     <string name="username">Username</string>
     <string name="telephone_number">Telephone Number</string>
     <string name="already_have_an_account">Already have an account?</string>
+    <string name="hey_eka">Hey, Eka</string>
+    <string name="what_movie_do_you_want_to_watch_today">What movie do you want to watch today?</string>
+    <string name="search_any_movies_name_here">Search any movies name here</string>
+    <string name="recent_search">Recent Search</string>
+    <string name="spiderman">Spiderman</string>
 </resources>
