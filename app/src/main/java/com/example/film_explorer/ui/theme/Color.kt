@@ -1,4 +1,4 @@
-package com.example.siagacovid_19.ui.theme
+package com.example.film_explorer.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

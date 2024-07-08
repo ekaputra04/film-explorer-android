@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:background="@color/white"
+    android:layout_height="match_parent">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -67,13 +68,11 @@
                     android:textColor="@color/white" />
             </LinearLayout>
 
-
             <LinearLayout
                 android:id="@+id/layout_info_poster"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/layout_btn"
-                android:visibility="gone"
                 android:layout_marginBottom="50dp"
                 android:orientation="vertical">
 

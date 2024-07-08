@@ -1,4 +1,4 @@
-package com.example.siagacovid_19
+package com.example.film_explorer
 
 import org.junit.Test
 

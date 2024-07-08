@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.siagacovid_19"
+    namespace = "com.example.film_explorer"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.siagacovid_19"
+        applicationId = "com.example.film_explorer"
         minSdk = 29
         targetSdk = 34
         versionCode = 1
@@ -52,7 +52,7 @@ android {
 dependencies {
 
     implementation("androidx.core:core-ktx:1.13.1")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.3")
     implementation("androidx.activity:activity-compose:1.9.0")
     implementation(platform("androidx.compose:compose-bom:2023.08.00"))
     implementation("androidx.compose.ui:ui")
@@ -61,13 +61,16 @@ dependencies {
     implementation("androidx.compose.material3:material3")
     implementation("com.android.volley:volley:1.2.1")
     implementation("androidx.cardview:cardview:1.0.0")
-    implementation("androidx.privacysandbox.tools:tools-core:1.0.0-alpha08")
+    implementation("androidx.privacysandbox.tools:tools-core:1.0.0-alpha09")
     // Glide library
     implementation("com.github.bumptech.glide:glide:4.12.0")
+    implementation("androidx.appcompat:appcompat:1.7.0")
+    implementation("com.google.android.material:material:1.12.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
     testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    androidTestImplementation("androidx.test.ext:junit:1.2.1")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
     androidTestImplementation(platform("androidx.compose:compose-bom:2023.08.00"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")

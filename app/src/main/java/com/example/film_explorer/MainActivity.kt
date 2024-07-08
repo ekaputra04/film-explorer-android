@@ -1,9 +1,10 @@
-package com.example.siagacovid_19
+package com.example.film_explorer
 
 import android.app.Activity
 import android.app.ProgressDialog
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -38,6 +39,7 @@ class MainActivity : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         initComponents()
+        layoutInfoPoster.visibility = View.GONE
     }
 
     private fun initComponents() {
@@ -103,6 +105,7 @@ class MainActivity : Activity() {
         )
 
         queue.add(stringRequest)
+        layoutInfoPoster.visibility = View.VISIBLE
     }
 
     private fun resetData() {

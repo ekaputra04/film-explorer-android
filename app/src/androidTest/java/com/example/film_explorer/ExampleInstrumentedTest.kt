@@ -1,4 +1,4 @@
-package com.example.siagacovid_19
+package com.example.film_explorer
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

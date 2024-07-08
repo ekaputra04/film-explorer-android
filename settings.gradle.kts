@@ -13,6 +13,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Siaga Covid-19"
+rootProject.name = "Film Explorer"
 include(":app")
  
