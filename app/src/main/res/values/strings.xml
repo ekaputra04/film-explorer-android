@@ -22,4 +22,9 @@
     <string name="tell_us_about_your_favorite_movies">Tell us about your favorite movies</string>
     <string name="next">Next</string>
     <string name="explore_your_favorite_movies">Explore your favorite movies</string>
+    <string name="sign_in">Sign In</string>
+    <string name="e_mail">E-mail</string>
+    <string name="password">Password</string>
+    <string name="don_t_you_have_an_account">Don’t you have an account?</string>
+    <string name="sign_up">Sign Up</string>
 </resources>
