@@ -35,4 +35,13 @@
     <string name="search_any_movies_name_here">Search any movies name here</string>
     <string name="recent_search">Recent Search</string>
     <string name="spiderman">Spiderman</string>
+    <string name="_1990">1990</string>
+    <string name="rating">Rating</string>
+    <string name="_9_0">9.0</string>
+    <string name="release_date">Release Date</string>
+    <string name="duration">Duration</string>
+    <string name="_5_min">5 min</string>
+    <string name="language">Language</string>
+    <string name="english">English</string>
+    <string name="action">Action</string>
 </resources>

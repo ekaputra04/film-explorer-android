@@ -9,7 +9,7 @@ class Database(context: Context) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
     companion object {
-        private const val DATABASE_NAME = "movies.db"
+        private const val DATABASE_NAME = "films.db"
         private const val DATABASE_VERSION = 1
     }
 
@@ -18,14 +18,18 @@ class Database(context: Context) :
         // Misalnya:
         // db?.execSQL("CREATE TABLE IF NOT EXISTS nama_tabel (...);")
 
-        val sql = "CREATE TABLE IF NOT EXISTS movies (" +
+        val sql = "CREATE TABLE IF NOT EXISTS films (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "title TEXT NOT NULL," +
                 "year TEXT NOT NULL," +
+                "rating TEXT NOT NULL," +
+                "duration TEXT NOT NULL," +
+                "release_date TEXT NOT NULL," +
+                "language TEXT NOT NULL," +
                 "genre TEXT NOT NULL," +
                 "director TEXT NOT NULL," +
                 "writer TEXT NOT NULL," +
-                "actors TEXT NOT NULL," +
+                "actor TEXT NOT NULL," +
                 "plot TEXT NOT NULL," +
                 "poster TEXT NOT NULL);"
         Log.d("data", "OnCreate: $sql")
