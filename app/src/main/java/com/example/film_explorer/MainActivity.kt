@@ -2,13 +2,18 @@ package com.example.film_explorer
 
 import android.app.Activity
 import android.app.ProgressDialog
+import android.content.ContentValues
 import android.content.Intent
+import android.database.Cursor
+import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.StringRequest
@@ -20,19 +25,35 @@ class MainActivity : Activity(), View.OnClickListener {
     private lateinit var edtSearch: EditText
     private lateinit var imgSearch: ImageView
     private lateinit var loading: ProgressDialog
+    private lateinit var database: Database
+    private lateinit var movieAdapter: MovieAdapter
+    private lateinit var recyclerView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         initComponents()
 
+        recyclerView.layoutManager = GridLayoutManager(this, 3)
+        recyclerView.adapter = movieAdapter
+
+        loadMoviesFromDatabase()
+
         edtSearch.setOnClickListener(this)
         imgSearch.setOnClickListener(this)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        loadMoviesFromDatabase()
     }
 
     private fun initComponents() {
         edtSearch = findViewById(R.id.edt_main_search)
         imgSearch = findViewById(R.id.img_main_search)
+        recyclerView = findViewById(R.id.rv_main)
+        database = Database(this)
+        movieAdapter = MovieAdapter(this, listOf())
     }
 
     override fun onClick(v: View?) {
@@ -41,12 +62,40 @@ class MainActivity : Activity(), View.OnClickListener {
             if (textForSearch.isEmpty()) {
                 Toast.makeText(this, "Masukkan kata kunci!", Toast.LENGTH_SHORT).show()
             } else {
-
-                fetchMovies(textForSearch.toString())
-                val intent = Intent(this, DetailActivity::class.java)
-                startActivity(intent)
+                if (checkDatabaseForMovie(textForSearch.toString())) {
+                    // Data found in the database
+                    val intent = Intent(this, DetailActivity::class.java)
+                    startActivity(intent)
+                } else {
+                    // Data not found, fetch from API
+                    fetchMovies(textForSearch.toString())
+                }
             }
         }
+    }
+
+    private fun checkDatabaseForMovie(title: String): Boolean {
+        val dbRead: SQLiteDatabase = database.readableDatabase
+        val cursor: Cursor = dbRead.rawQuery("SELECT * FROM films WHERE title LIKE ?", arrayOf(title))
+        if (cursor.moveToFirst()) {
+            // Data found in database, populate MovieObject
+            MovieObject.title = cursor.getString(cursor.getColumnIndexOrThrow("title"))
+            MovieObject.year = cursor.getString(cursor.getColumnIndexOrThrow("year"))
+            MovieObject.rating = cursor.getString(cursor.getColumnIndexOrThrow("rating"))
+            MovieObject.duration = cursor.getString(cursor.getColumnIndexOrThrow("duration"))
+            MovieObject.release_date = cursor.getString(cursor.getColumnIndexOrThrow("release_date"))
+            MovieObject.language = cursor.getString(cursor.getColumnIndexOrThrow("language"))
+            MovieObject.genre = cursor.getString(cursor.getColumnIndexOrThrow("genre"))
+            MovieObject.director = cursor.getString(cursor.getColumnIndexOrThrow("director"))
+            MovieObject.writer = cursor.getString(cursor.getColumnIndexOrThrow("writer"))
+            MovieObject.actor = cursor.getString(cursor.getColumnIndexOrThrow("actor"))
+            MovieObject.plot = cursor.getString(cursor.getColumnIndexOrThrow("plot"))
+            MovieObject.poster = cursor.getString(cursor.getColumnIndexOrThrow("poster"))
+            cursor.close()
+            return true
+        }
+        cursor.close()
+        return false
     }
 
     private fun fetchMovies(title: String) {
@@ -59,6 +108,8 @@ class MainActivity : Activity(), View.OnClickListener {
             { response ->
                 try {
                     val jo = JSONObject(response)
+                    val dbWrite: SQLiteDatabase = database.writableDatabase
+
                     MovieObject.title = jo.getString("Title")
                     MovieObject.year = jo.getString("Year")
                     MovieObject.rating = jo.getString("imdbRating")
@@ -71,7 +122,30 @@ class MainActivity : Activity(), View.OnClickListener {
                     MovieObject.actor = jo.getString("Actors")
                     MovieObject.plot = jo.getString("Plot")
                     MovieObject.poster = jo.getString("Poster")
+
+                    // Insert data into the database
+                    val values = ContentValues().apply {
+                        put("title", MovieObject.title)
+                        put("year", MovieObject.year)
+                        put("rating", MovieObject.rating)
+                        put("duration", MovieObject.duration)
+                        put("release_date", MovieObject.release_date)
+                        put("language", MovieObject.language)
+                        put("genre", MovieObject.genre)
+                        put("director", MovieObject.director)
+                        put("writer", MovieObject.writer)
+                        put("actor", MovieObject.actor)
+                        put("plot", MovieObject.plot)
+                        put("poster", MovieObject.poster)
+                        put("view_count", 0) // Initial view count
+                        put("CREATED_AT", System.currentTimeMillis().toString())
+                        put("UPDATED_AT", System.currentTimeMillis().toString())
+                    }
+                    dbWrite.insert("films", null, values)
+
                     loading.dismiss()
+                    val intent = Intent(this, DetailActivity::class.java)
+                    startActivity(intent)
                 } catch (e: JSONException) {
                     e.printStackTrace()
                     Toast.makeText(this, "Gagal mengambil data!", Toast.LENGTH_SHORT).show()
@@ -85,8 +159,26 @@ class MainActivity : Activity(), View.OnClickListener {
                 Toast.makeText(this, "Gagal mengambil Data!", Toast.LENGTH_SHORT).show()
                 error.printStackTrace()
                 Log.e("VolleyError", error.toString())
+                loading.dismiss()
             }
         )
         queue.add(stringRequest)
+    }
+
+    private fun loadMoviesFromDatabase() {
+        val dbRead: SQLiteDatabase = database.readableDatabase
+        val cursor: Cursor = dbRead.rawQuery("SELECT * FROM films", null)
+        val movies = mutableListOf<Movie>()
+
+        if (cursor.moveToFirst()) {
+            do {
+                val id = cursor.getInt(cursor.getColumnIndexOrThrow("id"))
+                val title = cursor.getString(cursor.getColumnIndexOrThrow("title"))
+                val poster = cursor.getString(cursor.getColumnIndexOrThrow("poster"))
+                movies.add(Movie(id, title, poster))
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+        movieAdapter.setMovies(movies)
     }
 }

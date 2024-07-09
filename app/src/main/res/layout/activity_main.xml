@@ -1,88 +1,95 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/dark"
-    android:paddingHorizontal="32dp"
-    android:paddingTop="64dp"
-    tools:context=".MainActivity">
+    android:layout_height="match_parent"
+    android:background="@color/dark">
 
-    <ImageView
-        android:id="@+id/img_main_profile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/profile"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-    <TextView
-        android:id="@+id/tv_main_hey_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/poppins_semi_bold"
-        android:text="@string/hey_eka"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:fontFamily="@font/poppins_regular"
-        android:text="@string/what_movie_do_you_want_to_watch_today"
-        android:textColor="@color/gray"
-        android:textSize="12sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_main_hey_name"
-        tools:ignore="SmallSp" />
-
-    <EditText
-        android:id="@+id/edt_main_search"
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:background="@drawable/background_input_dark_gray"
-        android:hint="@string/search_any_movies_name_here"
-        android:padding="16dp"
-        android:textColor="@color/gray"
-        android:textColorHint="@color/gray"
-        android:textSize="12sp"
-        app:layout_constraintTop_toBottomOf="@id/img_main_profile" />
+        android:background="@color/dark"
+        android:paddingHorizontal="32dp"
+        android:paddingTop="64dp"
+        tools:context=".MainActivity">
 
-    <ImageView
-        android:id="@+id/img_main_search"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:src="@drawable/search"
-        app:layout_constraintBottom_toBottomOf="@id/edt_main_search"
-        app:layout_constraintEnd_toEndOf="@id/edt_main_search"
-        app:layout_constraintTop_toTopOf="@id/edt_main_search" />
+        <ImageView
+            android:id="@+id/img_main_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/profile"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tv_main_recent_search"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:fontFamily="@font/poppins_semi_bold"
-        android:text="@string/recent_search"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edt_main_search" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_main_recent_search"
-        tools:listitem="@layout/item_movies" />
+        <TextView
+            android:id="@+id/tv_main_hey_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_semi_bold"
+            android:text="@string/hey_eka"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/poppins_regular"
+            android:text="@string/what_movie_do_you_want_to_watch_today"
+            android:textColor="@color/gray"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_main_hey_name"
+            tools:ignore="SmallSp" />
+
+        <EditText
+            android:id="@+id/edt_main_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/background_input_dark_gray"
+            android:hint="@string/search_any_movies_name_here"
+            android:padding="16dp"
+            android:textColor="@color/gray"
+            android:textColorHint="@color/gray"
+            android:textSize="12sp"
+            app:layout_constraintTop_toBottomOf="@id/img_main_profile" />
+
+        <ImageView
+            android:id="@+id/img_main_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/search"
+            app:layout_constraintBottom_toBottomOf="@id/edt_main_search"
+            app:layout_constraintEnd_toEndOf="@id/edt_main_search"
+            app:layout_constraintTop_toTopOf="@id/edt_main_search" />
+
+        <TextView
+            android:id="@+id/tv_main_recent_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:fontFamily="@font/poppins_semi_bold"
+            android:text="@string/recent_search"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edt_main_search" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_main_recent_search"
+            tools:listitem="@layout/item_movies" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

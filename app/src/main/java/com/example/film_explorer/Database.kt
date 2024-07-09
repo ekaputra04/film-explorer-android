@@ -31,7 +31,10 @@ class Database(context: Context) :
                 "writer TEXT NOT NULL," +
                 "actor TEXT NOT NULL," +
                 "plot TEXT NOT NULL," +
-                "poster TEXT NOT NULL);"
+                "poster TEXT NOT NULL," +
+                "view_count INTEGER NOT NULL," +
+                "CREATED_AT TEXT NOT NULL," +
+                "UPDATED_AT TEXT NOT NULL);"
         Log.d("data", "OnCreate: $sql")
         db?.execSQL(sql)
     }
