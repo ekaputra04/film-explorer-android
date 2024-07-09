@@ -1,6 +1,7 @@
 package com.example.film_explorer
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,10 +22,31 @@ class MovieAdapter(
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         val movie = movies[position]
+
         holder.title.text = movie.title
         Glide.with(context)
             .load(movie.poster)
             .into(holder.poster)
+
+        holder.itemView.setOnClickListener {
+            // Copy movie data to MovieObject
+            MovieObject.id = movie.id
+            MovieObject.title = movie.title
+            MovieObject.year = movie.year
+            MovieObject.rating = movie.rating
+            MovieObject.duration = movie.duration
+            MovieObject.release_date = movie.release_date
+            MovieObject.language = movie.language
+            MovieObject.genre = movie.genre
+            MovieObject.director = movie.director
+            MovieObject.writer = movie.writer
+            MovieObject.actor = movie.actor
+            MovieObject.plot = movie.plot
+            MovieObject.poster = movie.poster
+
+            val intent = Intent(context, DetailActivity::class.java)
+            context.startActivity(intent)
+        }
     }
 
     override fun getItemCount(): Int {
