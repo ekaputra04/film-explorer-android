@@ -1,7 +1,8 @@
 package com.example.film_explorer
 
 import android.app.Activity
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
+import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -9,6 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import com.bumptech.glide.Glide
+import com.example.film_explorer.MovieObject
 import org.json.JSONException
 
 class DetailActivity : Activity(), View.OnClickListener {
@@ -26,12 +28,19 @@ class DetailActivity : Activity(), View.OnClickListener {
     private lateinit var imgPoster: ImageView
     private lateinit var imgBack: ImageView
 
+    private lateinit var database: Database
+    private lateinit var db: SQLiteDatabase
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
         initComponents()
         updateInfoPoster()
         imgBack.setOnClickListener(this)
+
+        // Inisialisasi database
+        database = Database(this)
+        db = database.writableDatabase
     }
 
     private fun initComponents() {
@@ -64,6 +73,10 @@ class DetailActivity : Activity(), View.OnClickListener {
             tvActor.text = MovieObject.actor
             tvPlot.text = MovieObject.plot
             Glide.with(this).load(MovieObject.poster).into(imgPoster)
+
+            // Memperbarui view_count ketika DetailActivity dimuat
+            updateViewCount(MovieObject.id)
+
         } catch (e: JSONException) {
             e.printStackTrace()
             Toast.makeText(this, "Gagal menampilkan data!", Toast.LENGTH_SHORT).show()
@@ -72,9 +85,19 @@ class DetailActivity : Activity(), View.OnClickListener {
         }
     }
 
+    private fun updateViewCount(movieId: Int) {
+        database.updateViewCount(movieId)
+    }
+
     override fun onClick(v: View?) {
         if (v?.id == R.id.img_detail_back) {
             finish()
         }
     }
+
+//    override fun onDestroy() {
+//        db.close()
+//        database.close()
+//        super.onDestroy()
+//    }
 }

@@ -94,9 +94,11 @@ class MainActivity : Activity(), View.OnClickListener {
             MovieObject.plot = cursor.getString(cursor.getColumnIndexOrThrow("plot"))
             MovieObject.poster = cursor.getString(cursor.getColumnIndexOrThrow("poster"))
             cursor.close()
+            dbRead.close()
             return true
         }
         cursor.close()
+        dbRead.close()
         return false
     }
 
@@ -205,6 +207,12 @@ class MainActivity : Activity(), View.OnClickListener {
 
         }
         cursor.close()
+        dbRead.close()
         movieAdapter.setMovies(movies)
     }
+
+//    override fun onDestroy() {
+//        database.close()
+//        super.onDestroy()
+//    }
 }
