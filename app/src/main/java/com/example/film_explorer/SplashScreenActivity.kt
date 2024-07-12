@@ -17,7 +17,7 @@ class SplashScreenActivity : Activity() {
             } catch (e: InterruptedException) {
                 e.printStackTrace()
             } finally {
-                startActivity(Intent(this, MainActivity::class.java))
+                startActivity(Intent(this, SignInActivity::class.java))
                 finish()
             }
         }

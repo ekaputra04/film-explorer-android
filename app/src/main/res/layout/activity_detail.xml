@@ -178,14 +178,13 @@
                 android:id="@+id/tv_detail_text_genre"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="108dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:fontFamily="@font/poppins_semi_bold"
                 android:text="@string/genre"
                 android:textColor="@color/white"
                 android:textSize="14sp"
-                app:layout_constraintStart_toEndOf="@id/tv_detail_text_language"
-                app:layout_constraintTop_toBottomOf="@id/tv_detail_rating" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_detail_language" />
 
             <TextView
                 android:id="@+id/tv_detail_genre"
@@ -196,8 +195,8 @@
                 android:text="@string/action"
                 android:textColor="@color/white"
                 android:textSize="14sp"
-                app:layout_constraintStart_toStartOf="@id/tv_detail_text_genre"
-                app:layout_constraintTop_toBottomOf="@id/tv_detail_text_language" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_detail_text_genre" />
 
             <TextView
                 android:id="@+id/tv_detail_text_director"
@@ -209,7 +208,7 @@
                 android:textColor="@color/white"
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_detail_language" />
+                app:layout_constraintTop_toBottomOf="@id/tv_detail_genre" />
 
             <TextView
                 android:id="@+id/tv_detail_director"

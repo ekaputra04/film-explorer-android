@@ -11,6 +11,7 @@
         android:background="@color/dark"
         android:paddingHorizontal="32dp"
         android:paddingTop="64dp"
+        android:paddingBottom="48dp"
         tools:context=".MainActivity">
 
         <ImageView
