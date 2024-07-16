@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,6 +23,7 @@ import org.json.JSONException
 import org.json.JSONObject
 
 class MainActivity : Activity(), View.OnClickListener {
+    private lateinit var tvUsername: TextView
     private lateinit var edtSearch: EditText
     private lateinit var imgSearch: ImageView
     private lateinit var loading: ProgressDialog
@@ -33,6 +35,7 @@ class MainActivity : Activity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         initComponents()
+        updateUIUser()
 
         recyclerView.layoutManager = GridLayoutManager(this, 3)
         recyclerView.adapter = movieAdapter
@@ -43,12 +46,17 @@ class MainActivity : Activity(), View.OnClickListener {
         imgSearch.setOnClickListener(this)
     }
 
+    private fun updateUIUser() {
+        tvUsername.text = "Hey, ${UserObject.username}"
+    }
+
     override fun onResume() {
         super.onResume()
         loadMoviesFromDatabase()
     }
 
     private fun initComponents() {
+        tvUsername = findViewById(R.id.tv_main_hey_name)
         edtSearch = findViewById(R.id.edt_main_search)
         imgSearch = findViewById(R.id.img_main_search)
         recyclerView = findViewById(R.id.rv_main)
@@ -79,7 +87,8 @@ class MainActivity : Activity(), View.OnClickListener {
         var cursor: Cursor? = null
         return try {
             val formattedTitle = "%${title}%"
-            cursor = dbRead.rawQuery("SELECT * FROM films WHERE title LIKE ?", arrayOf(formattedTitle))
+            cursor =
+                dbRead.rawQuery("SELECT * FROM films WHERE title LIKE ?", arrayOf(formattedTitle))
             if (cursor.moveToFirst()) {
                 // Data found in database, populate MovieObject
                 MovieObject.id = cursor.getInt(cursor.getColumnIndexOrThrow("id"))
@@ -87,7 +96,8 @@ class MainActivity : Activity(), View.OnClickListener {
                 MovieObject.year = cursor.getString(cursor.getColumnIndexOrThrow("year"))
                 MovieObject.rating = cursor.getString(cursor.getColumnIndexOrThrow("rating"))
                 MovieObject.duration = cursor.getString(cursor.getColumnIndexOrThrow("duration"))
-                MovieObject.release_date = cursor.getString(cursor.getColumnIndexOrThrow("release_date"))
+                MovieObject.release_date =
+                    cursor.getString(cursor.getColumnIndexOrThrow("release_date"))
                 MovieObject.language = cursor.getString(cursor.getColumnIndexOrThrow("language"))
                 MovieObject.genre = cursor.getString(cursor.getColumnIndexOrThrow("genre"))
                 MovieObject.director = cursor.getString(cursor.getColumnIndexOrThrow("director"))
@@ -185,7 +195,8 @@ class MainActivity : Activity(), View.OnClickListener {
                     val year = cursor.getString(cursor.getColumnIndexOrThrow("year"))
                     val rating = cursor.getString(cursor.getColumnIndexOrThrow("rating"))
                     val duration = cursor.getString(cursor.getColumnIndexOrThrow("duration"))
-                    val release_date = cursor.getString(cursor.getColumnIndexOrThrow("release_date"))
+                    val release_date =
+                        cursor.getString(cursor.getColumnIndexOrThrow("release_date"))
                     val language = cursor.getString(cursor.getColumnIndexOrThrow("language"))
                     val genre = cursor.getString(cursor.getColumnIndexOrThrow("genre"))
                     val director = cursor.getString(cursor.getColumnIndexOrThrow("director"))

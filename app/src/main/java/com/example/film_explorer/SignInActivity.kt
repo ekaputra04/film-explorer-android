@@ -66,7 +66,18 @@ class SignInActivity : Activity(), View.OnClickListener {
     private fun checkUserCredentials(email: String, password: String): Boolean {
         var cursor: Cursor? = null
         return try {
-            cursor = db.rawQuery("SELECT * FROM users WHERE email = ? AND password = ?", arrayOf(email, password))
+            cursor = db.rawQuery(
+                "SELECT * FROM users WHERE email = ? AND password = ?",
+                arrayOf(email, password)
+            )
+            if (cursor.moveToFirst()) {
+                UserObject.id = cursor.getInt(cursor.getColumnIndexOrThrow("id"))
+                UserObject.username = cursor.getString(cursor.getColumnIndexOrThrow("username"))
+                UserObject.email = cursor.getString(cursor.getColumnIndexOrThrow("email"))
+                UserObject.password = cursor.getString(cursor.getColumnIndexOrThrow("password"))
+                UserObject.isAdmin =
+                    cursor.getString(cursor.getColumnIndexOrThrow("is_admin")).toBoolean()
+            }
             cursor.count > 0
         } catch (e: Exception) {
             Log.e("SignInActivity", "Error checking user credentials", e)
