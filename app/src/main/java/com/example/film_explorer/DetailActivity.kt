@@ -75,7 +75,7 @@ class DetailActivity : Activity(), View.OnClickListener {
             Glide.with(this).load(MovieObject.poster).into(imgPoster)
 
             // Memperbarui view_count ketika DetailActivity dimuat
-            updateViewCount(MovieObject.id)
+//            updateViewCount(MovieObject.id)
 
         } catch (e: JSONException) {
             e.printStackTrace()
@@ -85,9 +85,9 @@ class DetailActivity : Activity(), View.OnClickListener {
         }
     }
 
-    private fun updateViewCount(movieId: Int) {
-        database.updateViewCount(movieId)
-    }
+//    private fun updateViewCount(movieId: Int) {
+//        database.updateViewCount(movieId)
+//    }
 
     override fun onClick(v: View?) {
         if (v?.id == R.id.img_detail_back) {

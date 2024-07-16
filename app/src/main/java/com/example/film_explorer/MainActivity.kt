@@ -76,30 +76,36 @@ class MainActivity : Activity(), View.OnClickListener {
 
     private fun checkDatabaseForMovie(title: String): Boolean {
         val dbRead: SQLiteDatabase = database.readableDatabase
-        val cursor: Cursor =
-            dbRead.rawQuery("SELECT * FROM films WHERE title LIKE ?", arrayOf(title))
-        if (cursor.moveToFirst()) {
-            // Data found in database, populate MovieObject
-            MovieObject.title = cursor.getString(cursor.getColumnIndexOrThrow("title"))
-            MovieObject.year = cursor.getString(cursor.getColumnIndexOrThrow("year"))
-            MovieObject.rating = cursor.getString(cursor.getColumnIndexOrThrow("rating"))
-            MovieObject.duration = cursor.getString(cursor.getColumnIndexOrThrow("duration"))
-            MovieObject.release_date =
-                cursor.getString(cursor.getColumnIndexOrThrow("release_date"))
-            MovieObject.language = cursor.getString(cursor.getColumnIndexOrThrow("language"))
-            MovieObject.genre = cursor.getString(cursor.getColumnIndexOrThrow("genre"))
-            MovieObject.director = cursor.getString(cursor.getColumnIndexOrThrow("director"))
-            MovieObject.writer = cursor.getString(cursor.getColumnIndexOrThrow("writer"))
-            MovieObject.actor = cursor.getString(cursor.getColumnIndexOrThrow("actor"))
-            MovieObject.plot = cursor.getString(cursor.getColumnIndexOrThrow("plot"))
-            MovieObject.poster = cursor.getString(cursor.getColumnIndexOrThrow("poster"))
-            cursor.close()
+        var cursor: Cursor? = null
+        return try {
+            val formattedTitle = "%${title}%"
+            cursor = dbRead.rawQuery("SELECT * FROM films WHERE title LIKE ?", arrayOf(formattedTitle))
+            if (cursor.moveToFirst()) {
+                // Data found in database, populate MovieObject
+                MovieObject.id = cursor.getInt(cursor.getColumnIndexOrThrow("id"))
+                MovieObject.title = cursor.getString(cursor.getColumnIndexOrThrow("title"))
+                MovieObject.year = cursor.getString(cursor.getColumnIndexOrThrow("year"))
+                MovieObject.rating = cursor.getString(cursor.getColumnIndexOrThrow("rating"))
+                MovieObject.duration = cursor.getString(cursor.getColumnIndexOrThrow("duration"))
+                MovieObject.release_date = cursor.getString(cursor.getColumnIndexOrThrow("release_date"))
+                MovieObject.language = cursor.getString(cursor.getColumnIndexOrThrow("language"))
+                MovieObject.genre = cursor.getString(cursor.getColumnIndexOrThrow("genre"))
+                MovieObject.director = cursor.getString(cursor.getColumnIndexOrThrow("director"))
+                MovieObject.writer = cursor.getString(cursor.getColumnIndexOrThrow("writer"))
+                MovieObject.actor = cursor.getString(cursor.getColumnIndexOrThrow("actor"))
+                MovieObject.plot = cursor.getString(cursor.getColumnIndexOrThrow("plot"))
+                MovieObject.poster = cursor.getString(cursor.getColumnIndexOrThrow("poster"))
+                true
+            } else {
+                false
+            }
+        } catch (e: Exception) {
+            Log.e("MainActivity", "Error checking database for movie", e)
+            false
+        } finally {
+            cursor?.close()
             dbRead.close()
-            return true
         }
-        cursor.close()
-        dbRead.close()
-        return false
     }
 
     private fun fetchMovies(title: String) {
@@ -167,52 +173,51 @@ class MainActivity : Activity(), View.OnClickListener {
 
     private fun loadMoviesFromDatabase() {
         val dbRead: SQLiteDatabase = database.readableDatabase
-        val cursor: Cursor = dbRead.rawQuery("SELECT * FROM films ORDER BY UPDATED_AT DESC", null)
+        var cursor: Cursor? = null
         val movies = mutableListOf<Movie>()
 
-        if (cursor.moveToFirst()) {
-            do {
-                val id = cursor.getInt(cursor.getColumnIndexOrThrow("id"))
-                val title = cursor.getString(cursor.getColumnIndexOrThrow("title"))
-                val year = cursor.getString(cursor.getColumnIndexOrThrow("year"))
-                val rating = cursor.getString(cursor.getColumnIndexOrThrow("rating"))
-                val duration = cursor.getString(cursor.getColumnIndexOrThrow("duration"))
-                val release_date = cursor.getString(cursor.getColumnIndexOrThrow("release_date"))
-                val language = cursor.getString(cursor.getColumnIndexOrThrow("language"))
-                val genre = cursor.getString(cursor.getColumnIndexOrThrow("genre"))
-                val director = cursor.getString(cursor.getColumnIndexOrThrow("director"))
-                val writer = cursor.getString(cursor.getColumnIndexOrThrow("writer"))
-                val actor = cursor.getString(cursor.getColumnIndexOrThrow("actor"))
-                val plot = cursor.getString(cursor.getColumnIndexOrThrow("plot"))
-                val poster = cursor.getString(cursor.getColumnIndexOrThrow("poster"))
-                movies.add(
-                    Movie(
-                        id,
-                        title,
-                        year,
-                        rating,
-                        duration,
-                        release_date,
-                        language,
-                        genre,
-                        director,
-                        writer,
-                        actor,
-                        plot,
-                        poster
+        try {
+            cursor = dbRead.rawQuery("SELECT * FROM films ORDER BY UPDATED_AT DESC", null)
+            if (cursor.moveToFirst()) {
+                do {
+                    val id = cursor.getInt(cursor.getColumnIndexOrThrow("id"))
+                    val title = cursor.getString(cursor.getColumnIndexOrThrow("title"))
+                    val year = cursor.getString(cursor.getColumnIndexOrThrow("year"))
+                    val rating = cursor.getString(cursor.getColumnIndexOrThrow("rating"))
+                    val duration = cursor.getString(cursor.getColumnIndexOrThrow("duration"))
+                    val release_date = cursor.getString(cursor.getColumnIndexOrThrow("release_date"))
+                    val language = cursor.getString(cursor.getColumnIndexOrThrow("language"))
+                    val genre = cursor.getString(cursor.getColumnIndexOrThrow("genre"))
+                    val director = cursor.getString(cursor.getColumnIndexOrThrow("director"))
+                    val writer = cursor.getString(cursor.getColumnIndexOrThrow("writer"))
+                    val actor = cursor.getString(cursor.getColumnIndexOrThrow("actor"))
+                    val plot = cursor.getString(cursor.getColumnIndexOrThrow("plot"))
+                    val poster = cursor.getString(cursor.getColumnIndexOrThrow("poster"))
+                    movies.add(
+                        Movie(
+                            id,
+                            title,
+                            year,
+                            rating,
+                            duration,
+                            release_date,
+                            language,
+                            genre,
+                            director,
+                            writer,
+                            actor,
+                            plot,
+                            poster
+                        )
                     )
-                )
-            } while (cursor.moveToNext())
-
-
+                } while (cursor.moveToNext())
+            }
+        } catch (e: Exception) {
+            Log.e("MainActivity", "Error loading movies from database", e)
+        } finally {
+            cursor?.close()
+            dbRead.close()
         }
-        cursor.close()
-        dbRead.close()
         movieAdapter.setMovies(movies)
     }
-
-//    override fun onDestroy() {
-//        database.close()
-//        super.onDestroy()
-//    }
 }

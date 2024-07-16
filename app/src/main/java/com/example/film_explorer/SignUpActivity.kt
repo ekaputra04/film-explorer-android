@@ -67,7 +67,7 @@ class SignUpActivity : Activity(), View.OnClickListener {
                     Toast.makeText(this, "Email sudah terdaftar!", Toast.LENGTH_SHORT).show()
                 } else {
                     if (registerUser(username, telephone, email, password)) {
-                        val intent = Intent(this, MainActivity::class.java)
+                        val intent = Intent(this, SignInActivity::class.java)
                         startActivity(intent)
                         finish()
                     }
