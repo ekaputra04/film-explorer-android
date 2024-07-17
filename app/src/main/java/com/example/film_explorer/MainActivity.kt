@@ -7,6 +7,7 @@ import android.content.Intent
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
+import android.provider.ContactsContract.Profile
 import android.util.Log
 import android.view.View
 import android.widget.EditText
@@ -26,6 +27,7 @@ class MainActivity : Activity(), View.OnClickListener {
     private lateinit var tvUsername: TextView
     private lateinit var edtSearch: EditText
     private lateinit var imgSearch: ImageView
+    private lateinit var imgProfile: ImageView
     private lateinit var loading: ProgressDialog
     private lateinit var database: Database
     private lateinit var movieAdapter: MovieAdapter
@@ -44,6 +46,7 @@ class MainActivity : Activity(), View.OnClickListener {
 
         edtSearch.setOnClickListener(this)
         imgSearch.setOnClickListener(this)
+        imgProfile.setOnClickListener(this)
     }
 
     private fun updateUIUser() {
@@ -59,6 +62,7 @@ class MainActivity : Activity(), View.OnClickListener {
         tvUsername = findViewById(R.id.tv_main_hey_name)
         edtSearch = findViewById(R.id.edt_main_search)
         imgSearch = findViewById(R.id.img_main_search)
+        imgProfile = findViewById(R.id.img_main_profile)
         recyclerView = findViewById(R.id.rv_main)
         database = Database(this)
         movieAdapter = MovieAdapter(this, listOf())
@@ -79,6 +83,11 @@ class MainActivity : Activity(), View.OnClickListener {
                     fetchMovies(textForSearch.toString())
                 }
             }
+        }
+
+        if (v?.id == R.id.img_main_profile) {
+            val intent = Intent(this, ProfileActivity::class.java)
+            startActivity(intent)
         }
     }
 

@@ -44,4 +44,10 @@
     <string name="language">Language</string>
     <string name="english">English</string>
     <string name="action">Action</string>
+    <string name="profile">Profile</string>
+    <string name="john_doe">John Doe</string>
+    <string name="johndoe_gmail_com">johndoe@gmail.com</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="favorite_films">Favorite Films</string>
+    <string name="logout">Logout</string>
 </resources>
