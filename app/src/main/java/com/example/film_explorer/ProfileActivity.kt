@@ -19,6 +19,7 @@ class ProfileActivity : Activity(), View.OnClickListener {
     private lateinit var imgProfileDetail: ImageView
     private lateinit var imgFavoriteDetail: ImageView
     private lateinit var imgLogoutDetail: ImageView
+    private lateinit var database: Database
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +34,11 @@ class ProfileActivity : Activity(), View.OnClickListener {
         imgLogoutDetail.setOnClickListener(this)
     }
 
+    override fun onResume() {
+        super.onResume()
+        updateUIProfile()
+    }
+
     private fun updateUIProfile() {
         tvUsername.text = UserObject.username
         tvEmail.text = UserObject.email
@@ -45,6 +51,7 @@ class ProfileActivity : Activity(), View.OnClickListener {
         imgProfileDetail = findViewById(R.id.img_profile_detail_profile_next)
         imgFavoriteDetail = findViewById(R.id.img_profile_detail_favorite_next)
         imgLogoutDetail = findViewById(R.id.img_profile_detail_logout_next)
+        database = Database(this)
     }
 
     override fun onClick(v: View?) {
@@ -97,12 +104,20 @@ class ProfileActivity : Activity(), View.OnClickListener {
             val email = edtEmail.text.toString()
             val password = edtPassword.text.toString()
 
-            // Lakukan sesuatu dengan data input
-            Toast.makeText(
-                this,
-                "Username: $username\nEmail: $email\nPassword: $password",
-                Toast.LENGTH_SHORT
-            ).show()
+            // Update data di database
+            val result = database.updateUser(UserObject.id, username, email, password)
+
+            if (result > 0) {
+                // Update berhasil
+                Toast.makeText(this, "Data berhasil diupdate", Toast.LENGTH_SHORT).show()
+                // Perbarui data di UserObject
+                UserObject.username = username
+                UserObject.email = email
+                UserObject.password = password
+            } else {
+                // Update gagal
+                Toast.makeText(this, "Data gagal diupdate", Toast.LENGTH_SHORT).show()
+            }
 
             // Tutup dialog
             alertDialog.dismiss()

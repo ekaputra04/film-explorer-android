@@ -1,5 +1,6 @@
 package com.example.film_explorer
 
+import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
@@ -9,7 +10,7 @@ class Database(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
 
     companion object {
         private const val DATABASE_NAME = "films.db"
-        private const val DATABASE_VERSION = 6
+        private const val DATABASE_VERSION = 7
         private const val TAG = "Database"
     }
 
@@ -64,13 +65,25 @@ class Database(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-//        Log.d(TAG, "Upgrading database from version $oldVersion to $newVersion...")
-//        try {
-//            db?.execSQL("DROP TABLE IF EXISTS films")
-//            db?.execSQL("DROP TABLE IF EXISTS users")
-//            onCreate(db)
-//        } catch (e: Exception) {
-//            Log.e(TAG, "Error upgrading database", e)
-//        }
+        Log.d(TAG, "Upgrading database from version $oldVersion to $newVersion...")
+        try {
+            db?.execSQL("DROP TABLE IF EXISTS films")
+            db?.execSQL("DROP TABLE IF EXISTS users")
+            onCreate(db)
+        } catch (e: Exception) {
+            Log.e(TAG, "Error upgrading database", e)
+        }
+    }
+
+    // Fungsi untuk mengupdate data pengguna
+    fun updateUser(id: Int, username: String, email: String, password: String): Int {
+        val db = this.writableDatabase
+        val values = ContentValues().apply {
+            put("username", username)
+            put("email", email)
+            put("password", password)
+            put("updated_at", System.currentTimeMillis().toString())
+        }
+        return db.update("users", values, "id = ?", arrayOf(id.toString()))
     }
 }
