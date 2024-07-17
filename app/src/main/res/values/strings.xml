@@ -50,4 +50,9 @@
     <string name="edit_profile">Edit Profile</string>
     <string name="favorite_films">Favorite Films</string>
     <string name="logout">Logout</string>
+    <string name="masukkan_username">Masukkan username</string>
+    <string name="masukkan_email">Masukkan email</string>
+    <string name="masukkan_password">Masukkan password</string>
+    <string name="simpan">Simpan</string>
+    <string name="batal">Batal</string>
 </resources>
