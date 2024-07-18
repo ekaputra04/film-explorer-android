@@ -1,6 +1,7 @@
 package com.example.film_explorer
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.content.ContentValues
 import android.content.Intent
@@ -28,6 +29,7 @@ class MainActivity : Activity(), View.OnClickListener {
     private lateinit var edtSearch: EditText
     private lateinit var imgSearch: ImageView
     private lateinit var imgProfile: ImageView
+    private lateinit var imgFilter: ImageView
     private lateinit var loading: ProgressDialog
     private lateinit var database: Database
     private lateinit var movieAdapter: MovieAdapter
@@ -47,6 +49,7 @@ class MainActivity : Activity(), View.OnClickListener {
         edtSearch.setOnClickListener(this)
         imgSearch.setOnClickListener(this)
         imgProfile.setOnClickListener(this)
+        imgFilter.setOnClickListener(this)
     }
 
     private fun updateUIUser() {
@@ -56,6 +59,7 @@ class MainActivity : Activity(), View.OnClickListener {
     override fun onResume() {
         super.onResume()
         loadMoviesFromDatabase()
+        updateUIUser()
     }
 
     private fun initComponents() {
@@ -63,6 +67,7 @@ class MainActivity : Activity(), View.OnClickListener {
         edtSearch = findViewById(R.id.edt_main_search)
         imgSearch = findViewById(R.id.img_main_search)
         imgProfile = findViewById(R.id.img_main_profile)
+        imgFilter = findViewById(R.id.img_main_filter)
         recyclerView = findViewById(R.id.rv_main)
         database = Database(this)
         movieAdapter = MovieAdapter(this, listOf())
@@ -88,6 +93,10 @@ class MainActivity : Activity(), View.OnClickListener {
         if (v?.id == R.id.img_main_profile) {
             val intent = Intent(this, ProfileActivity::class.java)
             startActivity(intent)
+        }
+
+        if (v?.id == R.id.img_main_filter) {
+            showFilterDialog()
         }
     }
 
@@ -197,6 +206,87 @@ class MainActivity : Activity(), View.OnClickListener {
 
         try {
             cursor = dbRead.rawQuery("SELECT * FROM films ORDER BY UPDATED_AT DESC", null)
+            if (cursor.moveToFirst()) {
+                do {
+                    val id = cursor.getInt(cursor.getColumnIndexOrThrow("id"))
+                    val title = cursor.getString(cursor.getColumnIndexOrThrow("title"))
+                    val year = cursor.getString(cursor.getColumnIndexOrThrow("year"))
+                    val rating = cursor.getString(cursor.getColumnIndexOrThrow("rating"))
+                    val duration = cursor.getString(cursor.getColumnIndexOrThrow("duration"))
+                    val release_date =
+                        cursor.getString(cursor.getColumnIndexOrThrow("release_date"))
+                    val language = cursor.getString(cursor.getColumnIndexOrThrow("language"))
+                    val genre = cursor.getString(cursor.getColumnIndexOrThrow("genre"))
+                    val director = cursor.getString(cursor.getColumnIndexOrThrow("director"))
+                    val writer = cursor.getString(cursor.getColumnIndexOrThrow("writer"))
+                    val actor = cursor.getString(cursor.getColumnIndexOrThrow("actor"))
+                    val plot = cursor.getString(cursor.getColumnIndexOrThrow("plot"))
+                    val poster = cursor.getString(cursor.getColumnIndexOrThrow("poster"))
+                    movies.add(
+                        Movie(
+                            id,
+                            title,
+                            year,
+                            rating,
+                            duration,
+                            release_date,
+                            language,
+                            genre,
+                            director,
+                            writer,
+                            actor,
+                            plot,
+                            poster
+                        )
+                    )
+                } while (cursor.moveToNext())
+            }
+        } catch (e: Exception) {
+            Log.e("MainActivity", "Error loading movies from database", e)
+        } finally {
+            cursor?.close()
+            dbRead.close()
+        }
+        movieAdapter.setMovies(movies)
+    }
+
+    private fun showFilterDialog() {
+        val builder = AlertDialog.Builder(this)
+        val inflater = layoutInflater
+        val dialogLayout = inflater.inflate(R.layout.dialog_filter, null)
+
+        builder.setView(dialogLayout)
+        val dialog = builder.create()
+
+        dialogLayout.findViewById<TextView>(R.id.tv_sort_abjad).setOnClickListener {
+            dialog.dismiss()
+            sortMovies("abjad")
+        }
+        dialogLayout.findViewById<TextView>(R.id.tv_sort_terbaru).setOnClickListener {
+            dialog.dismiss()
+            sortMovies("terbaru")
+        }
+        dialogLayout.findViewById<TextView>(R.id.tv_sort_terlama).setOnClickListener {
+            dialog.dismiss()
+            sortMovies("terlama")
+        }
+
+        dialog.show()
+    }
+
+    private fun sortMovies(criteria: String) {
+        val dbRead: SQLiteDatabase = database.readableDatabase
+        var cursor: Cursor? = null
+        val movies = mutableListOf<Movie>()
+        val orderBy = when (criteria) {
+            "abjad" -> "title ASC"
+            "terbaru" -> "release_date DESC"
+            "terlama" -> "release_date ASC"
+            else -> "UPDATED_AT DESC"
+        }
+
+        try {
+            cursor = dbRead.rawQuery("SELECT * FROM films ORDER BY $orderBy", null)
             if (cursor.moveToFirst()) {
                 do {
                     val id = cursor.getInt(cursor.getColumnIndexOrThrow("id"))

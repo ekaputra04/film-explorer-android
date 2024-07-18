@@ -76,7 +76,7 @@ class ProfileActivity : Activity(), View.OnClickListener {
 
     private fun showEditTextDialog() {
         // Inflate layout yang sudah dibuat
-        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_input, null)
+        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_edit_profile, null)
         val edtUsername = dialogView.findViewById<EditText>(R.id.edt_dialog_input_username)
         val edtEmail = dialogView.findViewById<EditText>(R.id.edt_dialog_input_email)
         val edtPassword = dialogView.findViewById<EditText>(R.id.edt_dialog_input_password)

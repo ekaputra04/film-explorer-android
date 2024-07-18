@@ -55,4 +55,8 @@
     <string name="masukkan_password">Masukkan password</string>
     <string name="simpan">Simpan</string>
     <string name="batal">Batal</string>
+    <string name="abjad">Abjad</string>
+    <string name="terbaru">Terbaru</string>
+    <string name="terlama">Terlama</string>
+    <string name="filter">Filter :</string>
 </resources>
