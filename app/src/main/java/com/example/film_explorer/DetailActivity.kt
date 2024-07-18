@@ -1,6 +1,7 @@
 package com.example.film_explorer
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.util.Log
@@ -26,6 +27,7 @@ class DetailActivity : Activity(), View.OnClickListener {
     private lateinit var imgPoster: ImageView
     private lateinit var imgBack: ImageView
     private lateinit var imgFavorite: ImageView
+    private lateinit var imgOption: ImageView
     private lateinit var database: Database
     private var isFavorite: Boolean = false
 
@@ -35,8 +37,33 @@ class DetailActivity : Activity(), View.OnClickListener {
         initComponents()
         updateInfoPoster()
         checkFavoriteStatus()
+
         imgBack.setOnClickListener(this)
         imgFavorite.setOnClickListener(this)
+        imgOption.setOnClickListener(this)
+    }
+
+    override fun onClick(v: View?) {
+        if (v?.id == R.id.img_detail_back) {
+            finish()
+        }
+
+        if (v?.id == R.id.img_detail_favorite) {
+            if (isFavorite) {
+                database.removeFavorite(UserObject.id, MovieObject.id)
+                isFavorite = false
+                Toast.makeText(this, "Film dihapus dari favorit", Toast.LENGTH_SHORT).show()
+            } else {
+                database.addFavorite(UserObject.id, MovieObject.id)
+                isFavorite = true
+                Toast.makeText(this, "Film ditambahkan ke favorit", Toast.LENGTH_SHORT).show()
+            }
+            updateFavoriteIcon()
+        }
+
+        if (v?.id == R.id.img_detail_option) {
+            showDeleteConfirmationDialog()
+        }
     }
 
     private fun initComponents() {
@@ -54,7 +81,7 @@ class DetailActivity : Activity(), View.OnClickListener {
         imgPoster = findViewById(R.id.img_detail_poster)
         imgBack = findViewById(R.id.img_detail_back)
         imgFavorite = findViewById(R.id.img_detail_favorite)
-
+        imgOption = findViewById(R.id.img_detail_option)
         database = Database(this)
     }
 
@@ -90,22 +117,23 @@ class DetailActivity : Activity(), View.OnClickListener {
         imgFavorite.setImageResource(favoriteIcon)
     }
 
-    override fun onClick(v: View?) {
-        if (v?.id == R.id.img_detail_back) {
-            finish()
+    private fun showDeleteConfirmationDialog() {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_delete, null)
+        val alertDialog = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .create()
+
+        dialogView.findViewById<View>(R.id.btn_cancel).setOnClickListener {
+            alertDialog.dismiss()
         }
 
-        if (v?.id == R.id.img_detail_favorite) {
-            if (isFavorite) {
-                database.removeFavorite(UserObject.id, MovieObject.id)
-                isFavorite = false
-                Toast.makeText(this, "Film dihapus dari favorit", Toast.LENGTH_SHORT).show()
-            } else {
-                database.addFavorite(UserObject.id, MovieObject.id)
-                isFavorite = true
-                Toast.makeText(this, "Film ditambahkan ke favorit", Toast.LENGTH_SHORT).show()
-            }
-            updateFavoriteIcon()
+        dialogView.findViewById<View>(R.id.btn_delete).setOnClickListener {
+            database.deleteFilm(MovieObject.id)
+            alertDialog.dismiss()
+            Toast.makeText(this, "Film berhasil dihapus", Toast.LENGTH_SHORT).show()
+            finish() // Kembali ke halaman sebelumnya setelah menghapus film
         }
+
+        alertDialog.show()
     }
 }

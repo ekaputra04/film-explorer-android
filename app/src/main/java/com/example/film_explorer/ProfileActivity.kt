@@ -64,7 +64,8 @@ class ProfileActivity : Activity(), View.OnClickListener {
         }
 
         if (v?.id == R.id.img_profile_detail_favorite_next) {
-
+            val intent = Intent(this, FavoriteActivity::class.java)
+            startActivity(intent)
         }
 
         if (v?.id == R.id.img_profile_detail_logout_next) {

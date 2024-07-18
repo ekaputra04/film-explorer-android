@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/dark"
+    android:paddingHorizontal="32dp"
+    android:paddingVertical="48dp"
+    tools:context=".FavoriteActivity">
+
+    <ImageView
+        android:id="@+id/img_favorite_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:fontFamily="@font/poppins_regular"
+        android:text="@string/favorite_films"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@id/img_favorite_back"
+        app:layout_constraintStart_toEndOf="@id/img_favorite_back"
+        app:layout_constraintTop_toTopOf="@id/img_favorite_back" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_favorite"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/img_favorite_back"
+        tools:listitem="@layout/item_movies" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

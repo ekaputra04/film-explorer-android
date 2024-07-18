@@ -34,6 +34,7 @@ class MainActivity : Activity(), View.OnClickListener {
     private lateinit var database: Database
     private lateinit var movieAdapter: MovieAdapter
     private lateinit var recyclerView: RecyclerView
+    private lateinit var movies: List<Movie>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +45,9 @@ class MainActivity : Activity(), View.OnClickListener {
         recyclerView.layoutManager = GridLayoutManager(this, 3)
         recyclerView.adapter = movieAdapter
 
-        loadMoviesFromDatabase()
+        movies = emptyList()
+        movies = database.getAllFilms()
+        movieAdapter.setMovies(movies)
 
         edtSearch.setOnClickListener(this)
         imgSearch.setOnClickListener(this)
@@ -58,7 +61,9 @@ class MainActivity : Activity(), View.OnClickListener {
 
     override fun onResume() {
         super.onResume()
-        loadMoviesFromDatabase()
+        movies = emptyList()
+        movies = database.getAllFilms()
+        movieAdapter.setMovies(movies)
         updateUIUser()
     }
 
@@ -197,57 +202,6 @@ class MainActivity : Activity(), View.OnClickListener {
             loading.dismiss()
         })
         queue.add(stringRequest)
-    }
-
-    private fun loadMoviesFromDatabase() {
-        val dbRead: SQLiteDatabase = database.readableDatabase
-        var cursor: Cursor? = null
-        val movies = mutableListOf<Movie>()
-
-        try {
-            cursor = dbRead.rawQuery("SELECT * FROM films ORDER BY UPDATED_AT DESC", null)
-            if (cursor.moveToFirst()) {
-                do {
-                    val id = cursor.getInt(cursor.getColumnIndexOrThrow("id"))
-                    val title = cursor.getString(cursor.getColumnIndexOrThrow("title"))
-                    val year = cursor.getString(cursor.getColumnIndexOrThrow("year"))
-                    val rating = cursor.getString(cursor.getColumnIndexOrThrow("rating"))
-                    val duration = cursor.getString(cursor.getColumnIndexOrThrow("duration"))
-                    val release_date =
-                        cursor.getString(cursor.getColumnIndexOrThrow("release_date"))
-                    val language = cursor.getString(cursor.getColumnIndexOrThrow("language"))
-                    val genre = cursor.getString(cursor.getColumnIndexOrThrow("genre"))
-                    val director = cursor.getString(cursor.getColumnIndexOrThrow("director"))
-                    val writer = cursor.getString(cursor.getColumnIndexOrThrow("writer"))
-                    val actor = cursor.getString(cursor.getColumnIndexOrThrow("actor"))
-                    val plot = cursor.getString(cursor.getColumnIndexOrThrow("plot"))
-                    val poster = cursor.getString(cursor.getColumnIndexOrThrow("poster"))
-                    movies.add(
-                        Movie(
-                            id,
-                            title,
-                            year,
-                            rating,
-                            duration,
-                            release_date,
-                            language,
-                            genre,
-                            director,
-                            writer,
-                            actor,
-                            plot,
-                            poster
-                        )
-                    )
-                } while (cursor.moveToNext())
-            }
-        } catch (e: Exception) {
-            Log.e("MainActivity", "Error loading movies from database", e)
-        } finally {
-            cursor?.close()
-            dbRead.close()
-        }
-        movieAdapter.setMovies(movies)
     }
 
     private fun showFilterDialog() {
