@@ -121,6 +121,23 @@ class Database(context: Context) :
         )
     }
 
+    // Di dalam kelas Database
+    fun isFavorite(userId: Int, filmId: Int): Boolean {
+        val dbRead = this.readableDatabase
+        val cursor = dbRead.rawQuery(
+            "SELECT COUNT(*) FROM favorites WHERE user_id = ? AND film_id = ?",
+            arrayOf(userId.toString(), filmId.toString())
+        )
+        var exists = false
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                exists = cursor.getInt(0) > 0
+            }
+            cursor.close()
+        }
+        return exists
+    }
+
     // Fungsi untuk mendapatkan film favorit pengguna
     fun getFavoriteFilms(userId: Int): List<Movie> {
         val dbRead: SQLiteDatabase = this.readableDatabase

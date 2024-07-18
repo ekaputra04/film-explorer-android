@@ -1,7 +1,6 @@
 package com.example.film_explorer
 
 import android.app.Activity
-import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.util.Log
@@ -10,7 +9,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import com.bumptech.glide.Glide
-import com.example.film_explorer.MovieObject
 import org.json.JSONException
 
 class DetailActivity : Activity(), View.OnClickListener {
@@ -27,20 +25,18 @@ class DetailActivity : Activity(), View.OnClickListener {
     private lateinit var tvPlot: TextView
     private lateinit var imgPoster: ImageView
     private lateinit var imgBack: ImageView
-
+    private lateinit var imgFavorite: ImageView
     private lateinit var database: Database
-    private lateinit var db: SQLiteDatabase
+    private var isFavorite: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
         initComponents()
         updateInfoPoster()
+        checkFavoriteStatus()
         imgBack.setOnClickListener(this)
-
-        // Inisialisasi database
-        database = Database(this)
-        db = database.writableDatabase
+        imgFavorite.setOnClickListener(this)
     }
 
     private fun initComponents() {
@@ -57,6 +53,9 @@ class DetailActivity : Activity(), View.OnClickListener {
         tvPlot = findViewById(R.id.tv_detail_plot)
         imgPoster = findViewById(R.id.img_detail_poster)
         imgBack = findViewById(R.id.img_detail_back)
+        imgFavorite = findViewById(R.id.img_detail_favorite)
+
+        database = Database(this)
     }
 
     private fun updateInfoPoster() {
@@ -73,10 +72,6 @@ class DetailActivity : Activity(), View.OnClickListener {
             tvActor.text = MovieObject.actor
             tvPlot.text = MovieObject.plot
             Glide.with(this).load(MovieObject.poster).into(imgPoster)
-
-            // Memperbarui view_count ketika DetailActivity dimuat
-//            updateViewCount(MovieObject.id)
-
         } catch (e: JSONException) {
             e.printStackTrace()
             Toast.makeText(this, "Gagal menampilkan data!", Toast.LENGTH_SHORT).show()
@@ -85,19 +80,32 @@ class DetailActivity : Activity(), View.OnClickListener {
         }
     }
 
-//    private fun updateViewCount(movieId: Int) {
-//        database.updateViewCount(movieId)
-//    }
+    private fun checkFavoriteStatus() {
+        isFavorite = database.isFavorite(UserObject.id, MovieObject.id)
+        updateFavoriteIcon()
+    }
+
+    private fun updateFavoriteIcon() {
+        val favoriteIcon = if (isFavorite) R.drawable.favorite_red else R.drawable.favorite_white
+        imgFavorite.setImageResource(favoriteIcon)
+    }
 
     override fun onClick(v: View?) {
         if (v?.id == R.id.img_detail_back) {
             finish()
         }
-    }
 
-//    override fun onDestroy() {
-//        db.close()
-//        database.close()
-//        super.onDestroy()
-//    }
+        if (v?.id == R.id.img_detail_favorite) {
+            if (isFavorite) {
+                database.removeFavorite(UserObject.id, MovieObject.id)
+                isFavorite = false
+                Toast.makeText(this, "Film dihapus dari favorit", Toast.LENGTH_SHORT).show()
+            } else {
+                database.addFavorite(UserObject.id, MovieObject.id)
+                isFavorite = true
+                Toast.makeText(this, "Film ditambahkan ke favorit", Toast.LENGTH_SHORT).show()
+            }
+            updateFavoriteIcon()
+        }
+    }
 }
