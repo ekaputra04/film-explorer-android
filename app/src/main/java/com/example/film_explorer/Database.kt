@@ -6,11 +6,12 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
 
-class Database(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
+class Database(context: Context) :
+    SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
     companion object {
         private const val DATABASE_NAME = "films.db"
-        private const val DATABASE_VERSION = 7
+        private const val DATABASE_VERSION = 8
         private const val TAG = "Database"
     }
 
@@ -51,12 +52,24 @@ class Database(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
             );
         """.trimIndent()
 
+        val sqlCreateFavoriteTable = """
+            CREATE TABLE IF NOT EXISTS favorites (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER NOT NULL,
+                film_id INTEGER NOT NULL,
+                FOREIGN KEY (user_id) REFERENCES users(id),
+                FOREIGN KEY (film_id) REFERENCES films(id)
+            );
+        """.trimIndent()
+
         try {
             Log.d(TAG, "Creating database...")
             db?.execSQL(sqlCreateFilmTable)
             Log.d(TAG, "Creating films table...")
             db?.execSQL(sqlCreateUserTable)
             Log.d(TAG, "Creating users table...")
+            db?.execSQL(sqlCreateFavoriteTable)
+            Log.d(TAG, "Creating favorites table...")
 
             Log.d(TAG, "Tables created successfully.")
         } catch (e: Exception) {
@@ -69,6 +82,7 @@ class Database(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         try {
             db?.execSQL("DROP TABLE IF EXISTS films")
             db?.execSQL("DROP TABLE IF EXISTS users")
+            db?.execSQL("DROP TABLE IF EXISTS favorites")
             onCreate(db)
         } catch (e: Exception) {
             Log.e(TAG, "Error upgrading database", e)
@@ -85,5 +99,78 @@ class Database(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
             put("updated_at", System.currentTimeMillis().toString())
         }
         return db.update("users", values, "id = ?", arrayOf(id.toString()))
+    }
+
+    // Fungsi untuk menambah favorit
+    fun addFavorite(userId: Int, filmId: Int) {
+        val db = this.writableDatabase
+        val values = ContentValues().apply {
+            put("user_id", userId)
+            put("film_id", filmId)
+        }
+        db.insert("favorites", null, values)
+    }
+
+    // Fungsi untuk menghapus favorit
+    fun removeFavorite(userId: Int, filmId: Int) {
+        val db = this.writableDatabase
+        db.delete(
+            "favorites",
+            "user_id = ? AND film_id = ?",
+            arrayOf(userId.toString(), filmId.toString())
+        )
+    }
+
+    // Fungsi untuk mendapatkan film favorit pengguna
+    fun getFavoriteFilms(userId: Int): List<Movie> {
+        val dbRead: SQLiteDatabase = this.readableDatabase
+        val cursor = dbRead.rawQuery(
+            "SELECT films.* FROM films INNER JOIN favorites ON films.id = favorites.film_id WHERE favorites.user_id = ?",
+            arrayOf(userId.toString())
+        )
+        val movies = mutableListOf<Movie>()
+        try {
+            if (cursor.moveToFirst()) {
+                do {
+                    val id = cursor.getInt(cursor.getColumnIndexOrThrow("id"))
+                    val title = cursor.getString(cursor.getColumnIndexOrThrow("title"))
+                    val year = cursor.getString(cursor.getColumnIndexOrThrow("year"))
+                    val rating = cursor.getString(cursor.getColumnIndexOrThrow("rating"))
+                    val duration = cursor.getString(cursor.getColumnIndexOrThrow("duration"))
+                    val release_date =
+                        cursor.getString(cursor.getColumnIndexOrThrow("release_date"))
+                    val language = cursor.getString(cursor.getColumnIndexOrThrow("language"))
+                    val genre = cursor.getString(cursor.getColumnIndexOrThrow("genre"))
+                    val director = cursor.getString(cursor.getColumnIndexOrThrow("director"))
+                    val writer = cursor.getString(cursor.getColumnIndexOrThrow("writer"))
+                    val actor = cursor.getString(cursor.getColumnIndexOrThrow("actor"))
+                    val plot = cursor.getString(cursor.getColumnIndexOrThrow("plot"))
+                    val poster = cursor.getString(cursor.getColumnIndexOrThrow("poster"))
+                    movies.add(
+                        Movie(
+                            id,
+                            title,
+                            year,
+                            rating,
+                            duration,
+                            release_date,
+                            language,
+                            genre,
+                            director,
+                            writer,
+                            actor,
+                            plot,
+                            poster
+                        )
+                    )
+                } while (cursor.moveToNext())
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Error getting favorite films from database", e)
+        } finally {
+            cursor.close()
+            dbRead.close()
+        }
+        return movies
     }
 }
